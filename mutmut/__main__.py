@@ -156,7 +156,7 @@ def main(command, argument, argument2, paths_to_mutate, backup, runner, tests_di
     if use_coverage and use_patch_file:
         raise click.BadArgumentUsage("You can't combine --use-coverage and --use-patch")
 
-    valid_commands = ['run', 'results', 'apply', 'show', 'junitxml', 'html']
+    valid_commands = ['run', 'results', 'apply', 'show', 'junitxml', 'html', 'update-cache']
     if command not in valid_commands:
         raise click.BadArgumentUsage('{} is not a valid command, must be one of {}'.format(command, ', '.join(valid_commands)))
 
@@ -267,7 +267,7 @@ Legend for output:
             assert use_patch_file
             covered_lines_by_filename = read_patch_data(use_patch_file)
 
-    if command != 'run':
+    if command != 'run' and command != 'update-cache':
         raise click.BadArgumentUsage("Invalid command {}".format(command))
 
     mutations_by_file = {}
@@ -297,6 +297,9 @@ Legend for output:
     )
 
     parse_run_argument(argument, config, dict_synonyms, mutations_by_file, paths_to_exclude, paths_to_mutate, tests_dirs)
+    if command == 'update-cache':
+        print('Finished updating cash')
+        return
 
     config.total = sum(len(mutations) for mutations in mutations_by_file.values())
 
