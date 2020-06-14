@@ -1223,6 +1223,7 @@ def python_source_files(path, tests_dirs, paths_to_exclude=None):
     paths_to_exclude = paths_to_exclude or []
     if isdir(path):
         for root, dirs, files in os.walk(path, topdown=True):
+            dirs.sort()
             for exclude_pattern in paths_to_exclude:
                 dirs[:] = [d for d in dirs if not fnmatch.fnmatch(d, exclude_pattern)]
                 files[:] = [f for f in files if not fnmatch.fnmatch(f, exclude_pattern)]
